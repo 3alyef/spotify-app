@@ -18,9 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+		"types": [
+      "jest",
+    ], // Inclui os tipos do Jest para suporte a testes
   },
   "include": [
-    "src"
-  ]
+    "src",
+		/* "test/App.test.tsx", "src/reportWebVitals.ts", "test/setupTests.ts" */ 
+	]
 }
