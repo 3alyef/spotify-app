@@ -1,10 +1,10 @@
 import { NavigateFunction } from 'react-router-dom';
-import { i18n } from '../../lib/i18n';
+import { i18n, Locale } from '../../lib/i18n';
 import getLocale from './getLocale';
 
 export function middleware(
   pathname: string,
-  setCurrentLanguage: React.Dispatch<React.SetStateAction<string>>,
+  setCurrentLanguage: React.Dispatch<React.SetStateAction<Locale>>,
   navigate: NavigateFunction,
 ) {
   // Verifique se há alguma localidade suportada no nome do caminho
@@ -21,24 +21,35 @@ export function middleware(
   // NextResponse.redirect(new URL('/home', request.url));
   // Redirecionar se não houver localidade
   if (pathnameIsMissingLocale) {
-    const locale = getLocale();
+    const locale = getLocale().split('-')[0];
 
+    let thereIs: boolean = false;
+
+    if (i18n.locales.includes(locale as Locale)) {
+      thereIs = true;
+    }
+
+    if (!thereIs) {
+      // verifica se o usuário tentou manipular a rota em prol de uma language especifica, corrigindo o erro se o idioma do dispositivo for o mesmo da do erro...
+      const paths = pathname.split('/');
+      const pathsOk = paths.filter((e) => e !== locale);
+      const newPath = pathsOk.join('/');
+      setCurrentLanguage('en');
+      return navigate(`${'en'}${newPath.startsWith('/') ? '' : '/'}${newPath}`);
+    }
+    setCurrentLanguage(locale as Locale);
     return navigate(
       `${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
     );
-
-    //console.log(locale)
-    // return NextResponse.redirect(
-    //   new URL(
-    //     `/${locale}${pathname.startsWith('/') ? '' : '/'}${pathname}`,
-    //     request.url,
-    //   ),
-    // );
-  }
-
-  if (pathname.match(/^\/[a-z]{2}\/?$/)) {
-    // Verificar se a rota é `/:locale/, se for redireciona para /login`
+  } else {
     const locale = pathname.split('/')[1];
-    return NextResponse.redirect(new URL(`/${locale}/login`, request.url));
+    console.log('lc', locale);
+    setCurrentLanguage(locale as Locale);
   }
+
+  // if (pathname.match(/^\/[a-z]{2}\/?$/)) {
+  //   // Verificar se a rota é `/:locale/, se for redireciona para /login`
+  //   const locale = pathname.split('/')[1];
+  //   return navigate(`/${locale}/login`);
+  // }
 }
