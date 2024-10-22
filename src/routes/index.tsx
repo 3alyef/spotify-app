@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { middleware } from "../services/middlewares/middleware";
 import { Locale } from "../lib/i18n";
 import { getDictionary } from "../lib/get-dictionary";
+import GlobalContextProvider from "../context/GlobalContext";
 
 export default function AppRoutes() {
 	const [currentLanguage, setCurrentLanguage] = useState<Locale>('en');
@@ -29,7 +30,7 @@ export default function AppRoutes() {
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (
-		<>
+		<GlobalContextProvider>
 			{!isLoginPage && <Header />}
 			<Routes>
 				{
@@ -38,7 +39,7 @@ export default function AppRoutes() {
 				<Route path={`${currentLanguage}/login`} element={SuspenseRoute(<Login />)} />
 			</Routes>
 			{!isLoginPage && <Footer />}
-		</>
+		</GlobalContextProvider>
 	)
 
 }
