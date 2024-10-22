@@ -6,6 +6,7 @@ export function middleware(
   pathname: string,
   setCurrentLanguage: React.Dispatch<React.SetStateAction<Locale>>,
   navigate: NavigateFunction,
+  isLogged: boolean,
 ) {
   // Verifique se há alguma localidade suportada no nome do caminho
   const pathnameIsMissingLocale = i18n.locales.every(
@@ -43,13 +44,17 @@ export function middleware(
     );
   } else {
     const locale = pathname.split('/')[1];
-    console.log('lc', locale);
+    // console.log('lc', locale);
     setCurrentLanguage(locale as Locale);
   }
 
-  // if (pathname.match(/^\/[a-z]{2}\/?$/)) {
-  //   // Verificar se a rota é `/:locale/, se for redireciona para /login`
-  //   const locale = pathname.split('/')[1];
-  //   return navigate(`/${locale}/login`);
-  // }
+  if (pathname.match(/^\/[a-z]{2}\/?$/)) {
+    // Verificar se a rota é `/:locale/
+
+    if (!isLogged) {
+      // redireciona para /login se não estiver logado
+      const locale = pathname.split('/')[1];
+      return navigate(`/${locale}/login`);
+    }
+  }
 }
