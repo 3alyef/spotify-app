@@ -1,7 +1,7 @@
 import { ImgContainer } from "../../components/ImgContainer/index.style";
 import DefaultSection from "./components/DefaultSection.style";
 import LoginBtn from "./components/LoginBtn.style";
-import OptBurger from "./components/OptBurger.style";
+import OptBurger from "./components/optBurger/OptBurger.style";
 import { LoginContainer } from "./components/Wrapper.style";
 
 export default function Login(): JSX.Element {
@@ -11,10 +11,10 @@ export default function Login(): JSX.Element {
 				<img src="/assets/imagem.png" alt="imagem da tela login" />
 			</DefaultSection>
 			<DefaultSection flex="1">
-				<header className="">
+				<header className="flex items-end p-2">
 					<OptBurger />
 				</header>
-				<main className="flex flex-col items-center h-[90%] justify-evenly">
+				<main className="flex flex-col items-center h-[80%] justify-evenly">
 					<ImgContainer aspectRatio="577/324.5" maxWidth="390px">
 						<img src="/assets/spotify-login-logo.png" alt="spotify logo" />
 					</ImgContainer>
