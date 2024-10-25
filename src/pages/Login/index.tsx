@@ -1,8 +1,14 @@
-import { ImgContainer } from "../../components/ImgContainer/index.style";
+import styled from "styled-components";
 import DefaultSection from "./components/DefaultSection.style";
-import LoginBtn from "./components/LoginBtn.style";
 import OptBurger from "./components/optBurger/OptBurger.style";
 import { LoginContainer } from "./components/Wrapper.style";
+import Main from "./components/main/Main.styled";
+
+const Header = styled.header`
+	display: flex;
+	justify-content: flex-end;
+	padding: 0.5rem;
+`;
 
 export default function Login(): JSX.Element {
 	return (
@@ -11,25 +17,10 @@ export default function Login(): JSX.Element {
 				<img src="/assets/imagem.png" alt="imagem da tela login" />
 			</DefaultSection>
 			<DefaultSection flex="1">
-				<header className="flex items-end p-2">
+				<Header>
 					<OptBurger />
-				</header>
-				<main className="flex flex-col items-center h-[80%] justify-evenly">
-					<ImgContainer aspectRatio="577/324.5" maxWidth="390px">
-						<img src="/assets/spotify-login-logo.png" alt="spotify logo" />
-					</ImgContainer>
-					<div className="flex flex-col w-full max-w-[390px]">
-						<LoginBtn textValue="Entrar com Spotify" />
-						<div className="flex items-center gap-1">
-							<span className="spanLoginOr flex-1 border-t border-black"></span>
-							<p className="flex-3">
-								ou
-							</p>
-							<span className="spanLoginOr flex-1 border-t border-black"></span>
-						</div>
-						<LoginBtn textValue="Entrar como visitante" />
-					</div>
-				</main>
+				</Header>
+				<Main />
 			</DefaultSection>
 		</LoginContainer>
 	);

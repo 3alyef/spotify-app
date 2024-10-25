@@ -4,12 +4,12 @@ import { Footer, Header } from "../layouts/layouts";
 import { Home, Login } from "../pages/pages";
 import { useEffect, useState } from "react";
 import { middleware } from "../services/middlewares/middleware";
-import { Locale } from "../lib/i18n";
 import { getDictionary } from "../lib/get-dictionary";
-import GlobalContextProvider from "../context/GlobalContext";
+import { useGlobalContext } from "../context/GlobalContext";
 
 export default function AppRoutes() {
-	const [currentLanguage, setCurrentLanguage] = useState<Locale>('en');
+
+	const { currentLanguage, setCurrentLanguage } = useGlobalContext();
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [isLogged, setIsLogged] = useState(false);
 	const location = useLocation();
@@ -30,7 +30,7 @@ export default function AppRoutes() {
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (
-		<GlobalContextProvider>
+		<>
 			{!isLoginPage && <Header />}
 			<Routes>
 				{
@@ -39,7 +39,7 @@ export default function AppRoutes() {
 				<Route path={`${currentLanguage}/login`} element={SuspenseRoute(<Login />)} />
 			</Routes>
 			{!isLoginPage && <Footer />}
-		</GlobalContextProvider>
+		</>
 	)
 
 }
