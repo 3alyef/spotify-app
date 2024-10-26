@@ -1,6 +1,8 @@
 {
-	"translation": {
-		"header": "Cabeçalho",
-		"footer": "Rodape {{year}}"
-	}
+	"Login": {
+		"login_with_spotify": "Entrar com o Spotify",
+		"or": "ou",
+		"login_as_guest": "Entrar como visitante"
+	},
+	"Footer": "Rodapé {{year}}"
 }

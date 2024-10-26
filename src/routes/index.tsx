@@ -4,7 +4,6 @@ import { Footer, Header } from "../layouts/layouts";
 import { Home, Login } from "../pages/pages";
 import { useEffect, useState } from "react";
 import { middleware } from "../services/middlewares/middleware";
-import { getDictionary } from "../lib/get-dictionary";
 import { useGlobalContext } from "../context/GlobalContext";
 
 export default function AppRoutes() {
@@ -15,18 +14,9 @@ export default function AppRoutes() {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [dictionary, setDictionary] = useState<{ translation: { header: string } } | null>(null);
-
 	useEffect(() => {
 		middleware(location.pathname, setCurrentLanguage, navigate, isLogged);
-		async function fetchDictionary() {
-			const dict = await getDictionary(currentLanguage);
-			setDictionary(dict);
-			// setLoading(false); // Indica que o carregamento foi concluído
-		}
-
-		fetchDictionary();
-	}, [currentLanguage, location.pathname, navigate]);
+	}, [location.pathname, navigate]);
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (
@@ -34,7 +24,7 @@ export default function AppRoutes() {
 			{!isLoginPage && <Header />}
 			<Routes>
 				{
-					isLogged && <Route path={`${currentLanguage}/`} element={SuspenseRoute(<Home dictionary={dictionary} />)} />
+					isLogged && <Route path={`${currentLanguage}/`} element={SuspenseRoute(<Home />)} />
 				}
 				<Route path={`${currentLanguage}/login`} element={SuspenseRoute(<Login />)} />
 			</Routes>

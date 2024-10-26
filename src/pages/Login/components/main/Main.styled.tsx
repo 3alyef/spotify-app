@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { ImgContainer } from "../../../../components/ImgContainer/index.style";
 import LoginBtn from "../LoginBtn.style";
 import OrOptions from "./OrOptions.styled";
+import { useGlobalContext } from "../../../../context/GlobalContext";
 
 const MainContainer = styled.main`
 	display: flex;
@@ -18,16 +19,22 @@ const OptionContainer = styled.div`
 	max-width: 390px;
 `;
 
-export default function Main(): JSX.Element {
+
+export default function Main() {
+	const { dictionary } = useGlobalContext();
+
+	if (!dictionary) return <></>
+
+	const { Login } = dictionary;
 	return (
 		<MainContainer>
 			<ImgContainer aspectRatio="577/324.5" maxWidth="390px">
 				<img src="/assets/spotify-login-logo.png" alt="spotify logo" />
 			</ImgContainer>
 			<OptionContainer>
-				<LoginBtn textValue="Entrar com Spotify" />
-				<OrOptions />
-				<LoginBtn textValue="Entrar como visitante" />
+				<LoginBtn textValue={Login.login_with_spotify} />
+				<OrOptions or={Login.or} />
+				<LoginBtn textValue={Login.login_as_guest} />
 			</OptionContainer>
 		</MainContainer>
 	)

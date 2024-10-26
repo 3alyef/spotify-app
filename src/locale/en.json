@@ -1,6 +1,8 @@
 {
-	"translation": {
-		"header": "Header",
-		"footer": "Footer {{year}}"
-	}
+	"Login": {
+		"login_with_spotify": "login with spotify",
+		"or": "or",
+		"login_as_guest": "login as guest"
+	},
+	"Footer": "Footer {{year}}"
 }

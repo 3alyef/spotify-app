@@ -1,9 +1,12 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 import { GlobalContextInterface } from "./model";
 import { GlobalStyle } from "../thems/GlobalStyle";
 import { darkTheme, lightTheme, ThemeContract } from '../thems/thems';
 import { ThemeProvider } from "styled-components";
 import { Locale } from "../lib/i18n";
+import { TypeDictionary } from "../routes/model";
+import { getDictionary } from "../lib/get-dictionary";
+// import { useLocation } from "react-router-dom";
 
 interface PropsGlobalContextProvider {
 	children: React.ReactNode
@@ -22,12 +25,27 @@ export default function GlobalContextProvider({ children }: PropsGlobalContextPr
 			setTheme(darkTheme)
 		}
 	}
+
+	const [dictionary, setDictionary] = useState<TypeDictionary | undefined>();
+
+	// const location = useLocation();
+
+	useEffect(() => {
+		async function fetchDictionary() {
+			const dict = await getDictionary(currentLanguage);
+			setDictionary(dict);
+			// setLoading(false); // Indica que o carregamento foi concluído
+		}
+
+		fetchDictionary();
+	}, [currentLanguage, /*location.pathname*/])
 	return (
 		<GlobalContext.Provider value={{
 			themeId: theme.themeId,
 			toggleTheme,
 			currentLanguage,
-			setCurrentLanguage
+			setCurrentLanguage,
+			dictionary,
 		}}>
 			<GlobalStyle />
 			<ThemeProvider theme={theme}>

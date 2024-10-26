@@ -1,14 +1,14 @@
+import { useGlobalContext } from "../../context/GlobalContext";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function Home({ dictionary }: { dictionary: any }): JSX.Element {
-
+export default function Home(): JSX.Element {
+	const { dictionary } = useGlobalContext();
 	return (
 		<>
 			<h1>
 				Home
 			</h1>
 			<p>
-				{dictionary && dictionary.translation.header}
+				{dictionary && dictionary.Footer}
 			</p>
 		</>
 	)

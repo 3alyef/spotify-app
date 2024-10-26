@@ -6,17 +6,19 @@ import { IoSunnySharp } from "react-icons/io5";
 import { IoMoon } from "react-icons/io5";
 import IconContainer from "./IconContainer.style";
 import { useGlobalContext } from "../../../../context/GlobalContext";
-import LanguageMenu from "../../../../components/LanguageMenu";
+import LanguageMenu from "../../../../components/LanguageMenu/LanguageMenu";
 
 const StyledContainer = styled.div<{ theme: ThemeContract, optIs: boolean, timerTemp: number, childrenQuant: number, padding: number }>`
 	display: flex;
 	flex-direction: row-reverse;
-	justify-content: space-between;
+	align-items: center;
+	gap: 5px;
 	background-color: ${({ theme }) => theme.primaryColor};
 	border-radius: 15px;
 	padding: ${({ padding }) => `${padding}px`};
 	width: ${({ optIs, padding, childrenQuant }) => (optIs ? `${(54 * childrenQuant) - (padding * (childrenQuant + 1))}px` : "50px")
 	};
+	min-height: 55px;
 	transition: all ${({ timerTemp }) => `${timerTemp / 1000}s`} ease;
 `;
 
@@ -43,7 +45,11 @@ export default function OptBurger(): JSX.Element {
 				showOptions && (
 					<>
 						<IconContainer>
-							<LanguageMenu />
+							<LanguageMenu onClickCostumer={() => {
+								setTimeout(() => {
+									setOptIs(!optIs);
+								}, 900);
+							}} />
 						</IconContainer>
 						<IconContainer handleOption={() => toggleTheme()}>
 							{

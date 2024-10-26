@@ -5,6 +5,7 @@
 
 .languageSwitchContainer span {
 	user-select: none;
+	font-size: 23px;
 }
 
 .languageSwitchContainer .languagesSubContainer {
@@ -19,7 +20,8 @@
 	display: flex;
 	/* background-color: aquamarine; */
 	width: 100%;
-	padding: 0.22em 0.3em;
+	/* padding: 0.22em 0.3em;*/
+	padding: 0 .2em;
 	gap: 0.4375em;
 	align-items: center;
 	justify-content: space-evenly;
@@ -97,7 +99,8 @@
 	display: flex;
 	gap: 0.4375em;
 	align-items: center;
-	justify-content: space-between;
+	/* changed */
+	justify-content: center;
 }
 
 .languageFlagCostumer {

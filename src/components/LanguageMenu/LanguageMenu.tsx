@@ -1,14 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-// import { usePathname, useRouter } from "next/navigation";
-import LanguageFlagName from "../languageFlagName/languageFlagName";
-import { toggleMenuLanguages } from "../services/toggleMenuLanguages";
-import { languages } from "../../../lib/get-languages-names";
+import { useEffect, useRef, useState } from "react";
+import LanguageFlagName from "./languageFlagName/languageFlagName";
+import { toggleMenuLanguages } from "./services/toggleMenuLanguages";
+import { languages } from "../../lib/get-languages-names";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useGlobalContext } from "../../../context/GlobalContext";
-import { Locale } from "../../../lib/i18n";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { Locale } from "../../lib/i18n";
 import "./style.css";
 
-const LanguageSwitch: React.FC = () => {
+interface PropsLanguageMenu {
+	onClickCostumer?: () => void
+}
+export default function LanguageMenu({ onClickCostumer }: PropsLanguageMenu) {
 	const { setCurrentLanguage, currentLanguage: locale } = useGlobalContext()
 	//
 	const getCurrentHash = () => window.location.hash;
@@ -104,6 +106,7 @@ const LanguageSwitch: React.FC = () => {
 									<li key={key} onClick={() => {
 										setTimeout(() => {
 											redirectedPathName(key as Locale);
+											if (onClickCostumer) onClickCostumer()
 										}, 750);
 
 									}
@@ -131,5 +134,3 @@ const LanguageSwitch: React.FC = () => {
 		</div>
 	);
 };
-
-export default LanguageSwitch;

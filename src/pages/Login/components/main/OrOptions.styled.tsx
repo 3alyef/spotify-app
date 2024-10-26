@@ -11,12 +11,12 @@ const BarSpan = styled.span`
 	border-top: 1px solid black;
 `;
 //spanLoginOr
-export default function OrOptions(): JSX.Element {
+export default function OrOptions({ or }: { or: string }): JSX.Element {
 	return (
 		<Container>
 			<BarSpan></BarSpan>
 			<p>
-				ou
+				{or}
 			</p>
 			<BarSpan></BarSpan>
 		</Container>
