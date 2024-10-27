@@ -31,11 +31,12 @@ const StyledText = styled.div`
 
 interface PropsLoginBtn {
 	textValue: string;
+	onClick?: () => void;
 }
 
-export default function LoginBtn({ textValue }: PropsLoginBtn): JSX.Element {
+export default function LoginBtn({ textValue, onClick }: PropsLoginBtn): JSX.Element {
 	return (
-		<StyledContainer>
+		<StyledContainer onClick={onClick}>
 			<StyledText>{textValue}</StyledText>
 		</StyledContainer>
 	);

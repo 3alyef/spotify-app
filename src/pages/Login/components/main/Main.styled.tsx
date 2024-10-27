@@ -3,6 +3,8 @@ import { ImgContainer } from "../../../../components/ImgContainer/index.style";
 import LoginBtn from "../LoginBtn.style";
 import OrOptions from "./OrOptions.styled";
 import { useGlobalContext } from "../../../../context/GlobalContext";
+import { authSpotifyApi } from "../../../../auth/auth-token.service";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const MainContainer = styled.main`
 	display: flex;
@@ -21,9 +23,11 @@ const OptionContainer = styled.div`
 
 
 export default function Main() {
-	const { dictionary } = useGlobalContext();
+	const { dictionary, setTokenAccess, setIsLogged } = useGlobalContext();
 
 	if (!dictionary) return <></>
+	const location = useLocation();
+	const navigate = useNavigate();
 
 	const { Login } = dictionary;
 	return (
@@ -32,9 +36,13 @@ export default function Main() {
 				<img src="/assets/spotify-login-logo.png" alt="spotify logo" />
 			</ImgContainer>
 			<OptionContainer>
-				<LoginBtn textValue={Login.login_with_spotify} />
+				<LoginBtn textValue={Login.login_with_spotify} onClick={
+					authSpotifyApi.userAuthentication
+				} />
 				<OrOptions or={Login.or} />
-				<LoginBtn textValue={Login.login_as_guest} />
+				<LoginBtn textValue={Login.login_as_guest} onClick={() => authSpotifyApi.userAuthenticationAsGuest({
+					navigate, setIsLogged, setTokenAccess, location
+				})} />
 			</OptionContainer>
 		</MainContainer>
 	)

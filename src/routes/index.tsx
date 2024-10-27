@@ -2,21 +2,46 @@ import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { SuspenseRoute } from "../components/components";
 import { Footer, Header } from "../layouts/layouts";
 import { Home, Login } from "../pages/pages";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { middleware } from "../services/middlewares/middleware";
 import { useGlobalContext } from "../context/GlobalContext";
+import { authSpotifyApi } from "../auth/auth-token.service";
+
 
 export default function AppRoutes() {
 
-	const { currentLanguage, setCurrentLanguage } = useGlobalContext();
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const [isLogged, setIsLogged] = useState(false);
+	const { currentLanguage, setCurrentLanguage, setTokenAccess, tokenAccess, setIsLogged, isLogged } = useGlobalContext();
+
+	useEffect(() => console.log("Token: ", tokenAccess), [tokenAccess])
+
 	const location = useLocation();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		middleware(location.pathname, setCurrentLanguage, navigate, isLogged);
-	}, [location.pathname, navigate]);
+
+		async function auth(code: string) {
+			const token = await authSpotifyApi.authUser(code);
+			let logged = false;
+			if (token) {
+				setTokenAccess(token);
+				logged = true;
+			}
+			setIsLogged(logged);
+			return middleware(location, setCurrentLanguage, navigate, logged);
+		}
+
+		const searchParams = new URLSearchParams(location.search);
+		const code = searchParams.get("code");
+		if (code) {
+			//searchParams.delete('code');
+
+			auth(code);
+			return
+			//navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+		}
+		middleware(location, setCurrentLanguage, navigate, isLogged);
+	}, [location, navigate, isLogged]);
+
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (

@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 import { Locale } from "../lib/i18n";
 import { TypeDictionary } from "../routes/model";
 import { getDictionary } from "../lib/get-dictionary";
+import { SpotifyAuth } from "../auth/auth-token.service";
 // import { useLocation } from "react-router-dom";
 
 interface PropsGlobalContextProvider {
@@ -18,6 +19,7 @@ export default function GlobalContextProvider({ children }: PropsGlobalContextPr
 	// language
 	const [currentLanguage, setCurrentLanguage] = useState<Locale>('en');
 	const [theme, setTheme] = useState<ThemeContract>(darkTheme);
+	const [tokenAccess, setTokenAccess] = useState<SpotifyAuth | undefined>();
 	function toggleTheme() {
 		if (theme.themeId === 1) {
 			setTheme(lightTheme)
@@ -28,6 +30,7 @@ export default function GlobalContextProvider({ children }: PropsGlobalContextPr
 
 	const [dictionary, setDictionary] = useState<TypeDictionary | undefined>();
 
+	const [isLogged, setIsLogged] = useState(false);
 	// const location = useLocation();
 
 	useEffect(() => {
@@ -46,6 +49,10 @@ export default function GlobalContextProvider({ children }: PropsGlobalContextPr
 			currentLanguage,
 			setCurrentLanguage,
 			dictionary,
+			tokenAccess,
+			setTokenAccess,
+			isLogged,
+			setIsLogged
 		}}>
 			<GlobalStyle />
 			<ThemeProvider theme={theme}>
