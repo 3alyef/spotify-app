@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { middleware } from "../services/middlewares/middleware";
 import { useGlobalContext } from "../context/GlobalContext";
 import { authSpotifyApi } from "../auth/auth-token.service";
+import Playlists from "../pages/Playlists";
 
 
 export default function AppRoutes() {
@@ -49,7 +50,12 @@ export default function AppRoutes() {
 			{!isLoginPage && <Header />}
 			<Routes>
 				{
-					isLogged && <Route path={`${currentLanguage}/`} element={SuspenseRoute(<Home />)} />
+					isLogged && (
+						<>
+							<Route path={`${currentLanguage}/`} element={SuspenseRoute(<Home />)} />
+							<Route path={`${currentLanguage}/playlists`} element={SuspenseRoute(<Playlists />)} />
+						</>
+					)
 				}
 				<Route path={`${currentLanguage}/login`} element={SuspenseRoute(<Login />)} />
 			</Routes>

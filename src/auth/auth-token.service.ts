@@ -14,35 +14,48 @@ interface PropsUserAuthenticationAsGuest {
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-class AuthSpotifyApi {
-  private client_id: string;
-  private client_secret: string;
-  private redirect_uri: string;
+export class AuthData {
+  protected redirect_uri: string;
+  protected dataToServer: URLSearchParams;
+  protected client_id: string;
+  protected client_secret: string;
+  protected headers: {
+    'Content-type': string;
+    Authorization: string;
+  };
   constructor() {
     this.client_id = process.env.REACT_APP_CLIENT_ID || '';
     this.client_secret = process.env.REACT_APP_CLIENT_SECRET || '';
 
     this.redirect_uri = 'http://localhost:3000/';
-    this.userAuthentication = this.userAuthentication.bind(this);
-  }
-  async authUser(code: string): Promise<SpotifyAuth | undefined> {
-    const buffer = btoa(`${this.client_id}:${this.client_secret}`);
 
-    const data = new URLSearchParams();
-    data.append('grant_type', 'client_credentials');
-    data.append('redirect_uri', this.redirect_uri);
-    data.append('code', code);
-    const url = 'https://accounts.spotify.com/api/token';
-    const headers = {
-      'content-type': 'application/x-www-form-urlencoded',
+    this.dataToServer = new URLSearchParams();
+    this.dataToServer.append('grant_type', 'client_credentials');
+    this.dataToServer.append('redirect_uri', this.redirect_uri);
+
+    const buffer = btoa(`${client_id}:${client_secret}`);
+    this.headers = {
+      'Content-type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${buffer}`,
     };
+  }
+}
 
+class AuthSpotifyApi extends AuthData {
+  constructor() {
+    super();
+    this.userAuthentication = this.userAuthentication.bind(this);
+    // this.authUser = this.authUser.bind(this);
+  }
+
+  async authUser(code: string): Promise<SpotifyAuth | undefined> {
+    this.dataToServer.append('code', code);
+    const url = 'https://accounts.spotify.com/api/token';
     const response = await axios({
       url,
       method: 'POST',
-      headers,
-      data,
+      headers: this.headers,
+      data: this.dataToServer,
     });
 
     if (!response.data) {
@@ -61,14 +74,9 @@ class AuthSpotifyApi {
     const body = new URLSearchParams();
     body.append('grant_type', 'client_credentials');
 
-    const buffer = btoa(`${this.client_id}:${this.client_secret}`);
-
     const resp = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
-      headers: {
-        Authorization: `Basic ${buffer}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      headers: this.headers,
       body: body.toString(),
     });
 
