@@ -11,9 +11,8 @@ import Playlists from "../pages/Playlists";
 
 export default function AppRoutes() {
 
-	const { currentLanguage, setCurrentLanguage, setTokenAccess, tokenAccess, setIsLogged, isLogged } = useGlobalContext();
+	const { currentLanguage, setCurrentLanguage, setAccessToken, setIsLogged, isLogged } = useGlobalContext();
 
-	useEffect(() => console.log("Token: ", tokenAccess), [tokenAccess])
 
 	const location = useLocation();
 	const navigate = useNavigate();
@@ -21,14 +20,21 @@ export default function AppRoutes() {
 	useEffect(() => {
 
 		async function auth(code: string) {
-			const token = await authSpotifyApi.authUser(code);
+			const accessToken = await authSpotifyApi.authUser(code);
 			let logged = false;
-			if (token) {
-				setTokenAccess(token);
+			if (accessToken) {
+				setAccessToken(accessToken);
 				logged = true;
 			}
 			setIsLogged(logged);
 			return middleware(location, setCurrentLanguage, navigate, logged);
+		}
+		async function authAsGuest() {
+			await authSpotifyApi.userAuthenticationAsGuest({
+				navigate,
+				setIsLogged,
+				setAccessToken, location, noRedirect: true
+			})
 		}
 
 		const searchParams = new URLSearchParams(location.search);
@@ -39,6 +45,13 @@ export default function AppRoutes() {
 			auth(code);
 			return
 			//navigate(`${location.pathname}?${searchParams.toString()}`, { replace: true });
+		} else {
+			const searchParams = new URLSearchParams(location.search);
+			const type = searchParams.get("type");
+			if (type === "guest") {
+				authAsGuest();
+				return;
+			}
 		}
 		middleware(location, setCurrentLanguage, navigate, isLogged);
 	}, [location, navigate, isLogged]);

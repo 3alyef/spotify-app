@@ -8,8 +8,8 @@ export interface GlobalContextInterface {
   currentLanguage: Locale;
   setCurrentLanguage: React.Dispatch<React.SetStateAction<Locale>>;
   dictionary: TypeDictionary | undefined;
-  tokenAccess: SpotifyAuth | undefined;
-  setTokenAccess: React.Dispatch<React.SetStateAction<SpotifyAuth | undefined>>;
+  accessToken: SpotifyAuth | undefined;
+  setAccessToken: React.Dispatch<React.SetStateAction<SpotifyAuth | undefined>>;
   isLogged: boolean;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
 }

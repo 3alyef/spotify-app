@@ -23,7 +23,7 @@ const OptionContainer = styled.div`
 
 
 export default function Main() {
-	const { dictionary, setTokenAccess, setIsLogged } = useGlobalContext();
+	const { dictionary, setAccessToken, setIsLogged } = useGlobalContext();
 
 	if (!dictionary) return <></>
 	const location = useLocation();
@@ -41,7 +41,7 @@ export default function Main() {
 				} />
 				<OrOptions or={Login.or} />
 				<LoginBtn textValue={Login.login_as_guest} onClick={() => authSpotifyApi.userAuthenticationAsGuest({
-					navigate, setIsLogged, setTokenAccess, location
+					navigate, setIsLogged, setAccessToken, location
 				})} />
 			</OptionContainer>
 		</MainContainer>
