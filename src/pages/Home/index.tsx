@@ -7,7 +7,7 @@ export default function Home(): JSX.Element {
 	const [userData, setUserData] = useState<UserData | null>(null);
 	const { dictionary, accessToken } = useGlobalContext();
 	useEffect(() => {
-		async function updateUserData(access_token: string) {
+		/*async function updateUserData(access_token: string) {
 			const userData = await dataReceive.getUserData(access_token);
 			if (userData) {
 				setUserData(userData);
@@ -15,7 +15,7 @@ export default function Home(): JSX.Element {
 		}
 		if (accessToken) {
 			updateUserData(accessToken.access_token);
-		}
+		}*/
 	})
 	return (
 		<>

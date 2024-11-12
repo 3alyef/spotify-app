@@ -4,7 +4,9 @@ import { NavigateFunction, Location } from 'react-router-dom';
 export interface SpotifyAuth {
   access_token: string;
   token_type: string;
+  refresh_token: string;
   expires_in: number;
+  scope: string;
 }
 interface PropsUserAuthenticationAsGuest {
   navigate: NavigateFunction;
@@ -17,7 +19,6 @@ interface PropsUserAuthenticationAsGuest {
 
 export class AuthData {
   protected redirect_uri: string;
-  protected dataToServer: URLSearchParams;
   protected client_id: string;
   protected client_secret: string;
   protected apiUrl: string;
@@ -29,9 +30,6 @@ export class AuthData {
     this.apiUrlAccounts = process.env.REACT_APP_SPOTIFY_ACCOUNTS_URL || '';
 
     this.redirect_uri = process.env.REACT_APP_REDIRECT_URI || '';
-
-    this.dataToServer = new URLSearchParams();
-    this.dataToServer.append('grant_type', 'authorization_code');
   }
 
   protected getHeaders(accessToken?: string) {
@@ -65,46 +63,59 @@ class AuthSpotifyApi extends AuthData {
   }
 
   async authUser(code: string): Promise<SpotifyAuth | undefined> {
-    this.dataToServer.append('code', code);
-    const url = `${this.apiUrlAccounts}/api/token`;
-    const response = await axios({
-      url,
+    const authOptions = {
+      code: code,
+      redirect_uri: this.redirect_uri,
+      grant_type: 'authorization_code',
+    };
+
+    const response = await fetch(`${this.apiUrlAccounts}/api/token`, {
       method: 'POST',
       headers: this.getHeaders(),
-      data: this.dataToServer.append('redirect_uri', this.redirect_uri),
+      body: new URLSearchParams(authOptions).toString(),
     });
 
-    if (!response.data) {
+    const data = await response.json();
+    console.log('HERE DATA: ', data);
+    if (!data.ok) {
       const resF = {
-        message: response.statusText,
-        status: response.status,
+        message: data.statusText,
+        status: data.status,
       };
       console.error(resF);
       return;
     }
-    const final = await response.data;
+    const token = await data.data;
 
-    console.log('auth_user HINEEE: ', final);
-    return final as SpotifyAuth;
+    return token as SpotifyAuth;
+  }
+
+  userAuthentication() {
+    const url = `${this.apiUrlAccounts}/authorize?response_type=code&client_id=${this.client_id}&scope=${encodeURIComponent(this.scopes)}&redirect_uri=${this.redirect_uri}`;
+    location.href = url;
   }
 
   private async authGuest(): Promise<SpotifyAuth | undefined> {
+    // The Client Credentials flow is used in server-to-server authentication. Since this flow does not include authorization, only endpoints that do not access user information can be accessed.
+
+    const body = new URLSearchParams();
+    body.append('grant_type', 'client_credentials');
+
     const resp = await fetch(`${this.apiUrlAccounts}/api/token`, {
       method: 'POST',
       headers: this.getHeaders(),
-      body: this.dataToServer,
+      body,
     });
 
     const respjs = await resp.json();
-    //console.log(respjs);
     if (resp.ok) {
       return respjs as SpotifyAuth;
     }
-    const err = {
-      message: 'Erro ao fazer login',
-      status: 500,
+    const error = {
+      message: `Erro ao fazer login: ${resp.statusText}`,
+      status: resp.status,
     };
-    console.error(err);
+    console.error(error);
     return;
   }
 
@@ -117,24 +128,14 @@ class AuthSpotifyApi extends AuthData {
   }: PropsUserAuthenticationAsGuest) {
     const token = await this.authGuest();
     if (token) {
-      let logged = false;
-      if (token) {
-        setAccessToken(token);
-        logged = true;
-      }
-      setIsLogged(logged);
+      setAccessToken(token);
+      setIsLogged(true);
       if (noRedirect) {
         return;
       }
       const locale = location.pathname.split('/')[1];
       return navigate(`/${locale}/?type=guest`);
     }
-  }
-
-  userAuthentication() {
-    const url = `${this.apiUrlAccounts}/authorize?response_type=code&client_id=${this.client_id}&scope=${encodeURIComponent(this.scopes)}&redirect_uri=${this.redirect_uri}`;
-    console.log(url);
-    //location.href = url;
   }
 }
 export const authSpotifyApi = new AuthSpotifyApi();
