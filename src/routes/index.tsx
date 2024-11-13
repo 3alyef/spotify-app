@@ -19,16 +19,14 @@ export default function AppRoutes() {
 
 	useEffect(() => {
 		async function auth(code: string) {
-			console.log("O Token é: ", accessToken);
 			if (!isLogged) {
 				const newAccessToken = await authSpotifyApi.authUser(code);
-
-				localStorage.setItem('access_token', JSON.stringify(newAccessToken));
-				localStorage.setItem('created_in_token', Math.floor(Date.now() / 1000).toString()); // Armazena o tempo em segundos
-
 				let logged = false;
+				const token = JSON.stringify(newAccessToken);
 				if (newAccessToken) {
-					localStorage.setItem('access_token', JSON.stringify(newAccessToken));
+
+					localStorage.setItem('access_token', JSON.stringify(token));
+					localStorage.setItem('created_in_token', Math.floor(Date.now() / 1000).toString()); // Armazena o tempo em segundos
 					setAccessToken(newAccessToken);
 					logged = true;
 				}

@@ -76,8 +76,8 @@ class AuthSpotifyApi extends AuthData {
     });
 
     const data = await response.json();
-    console.log('HERE DATA: ', data);
-    if (!data.ok) {
+
+    if (!data) {
       const resF = {
         message: data.statusText,
         status: data.status,
@@ -85,9 +85,8 @@ class AuthSpotifyApi extends AuthData {
       console.error(resF);
       return;
     }
-    const token = await data.data;
 
-    return token as SpotifyAuth;
+    return data as SpotifyAuth;
   }
 
   userAuthentication() {
