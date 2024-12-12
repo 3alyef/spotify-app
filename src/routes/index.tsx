@@ -7,7 +7,12 @@ import { middleware } from "../services/middlewares/middleware";
 import { useGlobalContext } from "../context/GlobalContext";
 import { authSpotifyApi, SpotifyAuth } from "../auth/auth-token.service";
 import Playlists from "../pages/Playlists";
+import styled from "styled-components";
 
+const Container = styled.div`
+	width: 100vw;
+	hight: 100vh;
+`
 
 export default function AppRoutes() {
 
@@ -73,21 +78,22 @@ export default function AppRoutes() {
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (
-		<>
-			{!isLoginPage && <Header />}
+		<Container>
+			{!isLoginPage && <Home />}
 			<Routes>
 				{
 					isLogged && (
 						<>
 							<Route path={`${currentLanguage}/`} element={SuspenseRoute(<Home />)} />
 							<Route path={`${currentLanguage}/playlists`} element={SuspenseRoute(<Playlists />)} />
+							{/*!isLoginPage && <Footer />*/}
 						</>
 					)
 				}
 				<Route path={`${currentLanguage}/login`} element={SuspenseRoute(<Login />)} />
 			</Routes>
-			{!isLoginPage && <Footer />}
-		</>
+
+		</Container>
 	)
 
 }

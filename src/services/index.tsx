@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import DefaultSection from "./components/DefaultSection.style";
-import OptBurger from "./components/optBurger/OptBurger.style";
-import { LoginContainer } from "./components/Wrapper.style";
-import Main from "./components/main/Main.styled";
+import DefaultSection from "../pages/Login/components/DefaultSection.style";
+import OptBurger from "../pages/Login/components/optBurger/OptBurger.style";
+import { LoginContainer } from "../pages/Login/components/Wrapper.style";
+import Main from "../pages/Login/components/main/Main.styled";
 
 const Header = styled.header`
 	display: flex;

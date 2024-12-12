@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { NavigateFunction, Location } from 'react-router-dom';
 
 export interface SpotifyAuth {
@@ -12,7 +11,7 @@ interface PropsUserAuthenticationAsGuest {
   navigate: NavigateFunction;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   location: Location<any>;
-  setAccessToken: React.Dispatch<React.SetStateAction<SpotifyAuth | undefined>>;
+  setAccessToken: React.Dispatch<React.SetStateAction<SpotifyAuth>>;
   setIsLogged: React.Dispatch<React.SetStateAction<boolean>>;
   noRedirect?: true;
 }
@@ -33,16 +32,17 @@ export class AuthData {
   }
 
   protected getHeaders(accessToken?: string) {
-    const buffer = btoa(`${this.client_id}:${this.client_secret}`);
     if (accessToken) {
       return {
-        Authorization: 'Bearer ' + accessToken,
+        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       };
     }
+
+    const buffer = btoa(`${this.client_id}:${this.client_secret}`);
     return {
-      'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${buffer}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
     };
   }
 }

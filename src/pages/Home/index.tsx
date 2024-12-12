@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { UserData } from "../../interfaces/user-data";
-import dataReceive from "../../services/DataReceive.service";
+import Background from "./components/bg/Bg.styled";
 
 export default function Home(): JSX.Element {
 	const [userData, setUserData] = useState<UserData | null>(null);
@@ -18,14 +18,12 @@ export default function Home(): JSX.Element {
 		}*/
 	})
 	return (
-		<>
+		<Background>
 			<h1>
 				Home
 			</h1>
 			<p>
-				{userData && Object.entries(userData).map((e, i) => <p key={i}>{e}</p>)}
-				{dictionary && dictionary.Footer}
 			</p>
-		</>
+		</Background>
 	)
 }

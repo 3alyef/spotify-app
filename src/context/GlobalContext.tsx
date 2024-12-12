@@ -19,7 +19,14 @@ export default function GlobalContextProvider({ children }: PropsGlobalContextPr
 	// language
 	const [currentLanguage, setCurrentLanguage] = useState<Locale>('en');
 	const [theme, setTheme] = useState<ThemeContract>(darkTheme);
-	const [accessToken, setAccessToken] = useState<SpotifyAuth | undefined>();
+	const [accessToken, setAccessToken] = useState<SpotifyAuth>({
+		access_token: '',
+		expires_in: 0,
+		refresh_token: '',
+		scope: '',
+		token_type: ''
+	});
+
 	function toggleTheme() {
 		if (theme.themeId === 1) {
 			setTheme(lightTheme)
