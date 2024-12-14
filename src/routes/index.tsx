@@ -11,7 +11,11 @@ import styled from "styled-components";
 
 const Container = styled.div`
 	width: 100vw;
-	hight: 100vh;
+	height: 100vh;
+	background-color: #0b2557;
+	display: flex;
+	flex-direction: column;
+	color: ${({ theme }) => theme.textColor.primaryColor}
 `
 
 export default function AppRoutes() {
@@ -79,7 +83,7 @@ export default function AppRoutes() {
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
 	return (
 		<Container>
-			{!isLoginPage && <Home />}
+			{!isLoginPage && <Header />}
 			<Routes>
 				{
 					isLogged && (

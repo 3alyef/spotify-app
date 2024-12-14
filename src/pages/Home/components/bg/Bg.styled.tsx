@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 const Container = styled.main`
 	background-image: linear-gradient(to bottom, #191414, #999999);
+	flex: 1;
 `
 interface PropsBg {
 	children: React.ReactNode
