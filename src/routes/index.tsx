@@ -9,6 +9,8 @@ import { authSpotifyApi, SpotifyAuth } from "../auth/auth-token.service";
 import Playlists from "../pages/Playlists";
 import styled from "styled-components";
 
+
+// bag-color-ok: #0b2557
 const Container = styled.div`
 	width: 100vw;
 	height: 100vh;
@@ -20,7 +22,7 @@ const Container = styled.div`
 
 export default function AppRoutes() {
 
-	const { currentLanguage, setCurrentLanguage, setAccessToken, setIsLogged, isLogged, accessToken } = useGlobalContext();
+	const { currentLanguage, setCurrentLanguage, setAccessToken, setIsLogged, isLogged } = useGlobalContext();
 
 
 	const location = useLocation();
@@ -81,6 +83,7 @@ export default function AppRoutes() {
 
 
 	const isLoginPage = location.pathname === `/${currentLanguage}/login`;
+
 	return (
 		<Container>
 			{!isLoginPage && <Header />}
@@ -99,5 +102,4 @@ export default function AppRoutes() {
 
 		</Container>
 	)
-
 }

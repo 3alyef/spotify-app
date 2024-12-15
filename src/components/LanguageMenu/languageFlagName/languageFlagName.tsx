@@ -1,22 +1,23 @@
 interface LanguagesFlagName {
 	languageName: string;
 	languageNameFull: string;
+	customStyle?: React.CSSProperties;
 	flag?: string;
-	costumerClass?: string;
+	customClass?: string;
 }
 
 
-export default function LanguageFlagName({ flag, costumerClass }: LanguagesFlagName) {
+export default function LanguageFlagName({ flag, customStyle, customClass }: LanguagesFlagName) {
 	return (
 		<>
-			<div className={`languageFlag ${costumerClass}`}>
+			<div className={`languageFlag ${customClass}`}>
 				{/* <span className="languageName languageNameFull">
 					{languageNameFull}
 				</span>
 				<span className="languageName languageNameSm">
 					{languageName}
 				</span> */}
-				<span className="flag">
+				<span style={customStyle} className="flag">
 					{flag}
 				</span>
 			</div>

@@ -8,9 +8,10 @@ import { Locale } from "../../lib/i18n";
 import "./style.css";
 
 interface PropsLanguageMenu {
-	onClickCostumer?: () => void
+	onClickCostumer?: () => void;
+	customStyle?: React.CSSProperties;
 }
-export default function LanguageMenu({ onClickCostumer }: PropsLanguageMenu) {
+export default function LanguageMenu({ onClickCostumer, customStyle }: PropsLanguageMenu) {
 	const { setCurrentLanguage, currentLanguage: locale } = useGlobalContext()
 	//
 	const getCurrentHash = () => window.location.hash;
@@ -94,7 +95,8 @@ export default function LanguageMenu({ onClickCostumer }: PropsLanguageMenu) {
 									>
 										<LanguageFlagName languageName={value[1]}
 											languageNameFull={value[0]}
-											flag={value[2]} costumerClass="languageFlagCostumer" />
+											flag={value[2]} customClass="languageFlagCostumer"
+											customStyle={customStyle} />
 
 									</li>
 								)
@@ -111,7 +113,8 @@ export default function LanguageMenu({ onClickCostumer }: PropsLanguageMenu) {
 
 									}
 									}>
-										<LanguageFlagName languageName={value[1]} languageNameFull={value[0]} flag={value[2]} costumerClass="languageFlagCostumer" />
+										<LanguageFlagName languageName={value[1]} languageNameFull={value[0]} flag={value[2]} customClass="languageFlagCostumer"
+											customStyle={customStyle} />
 
 									</li>
 								)
