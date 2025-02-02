@@ -6,6 +6,7 @@ import LanguageMenu from "../../../../components/LanguageMenu/LanguageMenu";
 import ImageLink from "../imageLink/imageLink.styled";
 import { useState } from "react";
 import OptTitle from "./OptTitle";
+import { BiWorld } from "react-icons/bi";
 
 const Container = styled.nav`
 	display: flex;
@@ -47,6 +48,7 @@ const LoginOpt = styled.div`
 export default function Nav() {
 	const { toggleTheme, themeId, isLogged } = useGlobalContext();
 	const [showOptTitle, setShowOptTitle] = useState(false);
+	const [onMenu, setOnMenu] = useState(false);
 	return (
 		<Container>
 			<RotesLinks>
@@ -71,12 +73,13 @@ export default function Nav() {
 							)
 						}
 					</IconContainer>
-					<IconContainer scale={1.1}>
-						<LanguageMenu customStyle={
-							{
-								fontSize: '25px'
-							}
-						} />
+					<IconContainer scale={1.1} handleOption={() => setOnMenu(el => !el)}>
+						<BiWorld size={35} style={{ position: 'absolute' }} />
+						<LanguageMenu fontSize="20px" languageContainerStyle={{
+							position: 'relative',
+							top: '12px',
+							left: '16px'
+						}} onMenu={onMenu} />
 					</IconContainer>
 				</UX>
 				<LoginOpt>

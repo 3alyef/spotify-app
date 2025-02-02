@@ -10,8 +10,11 @@ import "./style.css";
 interface PropsLanguageMenu {
 	onClickCostumer?: () => void;
 	customStyle?: React.CSSProperties;
+	fontSize?: string;
+	languageContainerStyle?: React.CSSProperties;
+	onMenu?: boolean
 }
-export default function LanguageMenu({ onClickCostumer, customStyle }: PropsLanguageMenu) {
+export default function LanguageMenu({ onClickCostumer, customStyle, fontSize, languageContainerStyle, onMenu }: PropsLanguageMenu) {
 	const { setCurrentLanguage, currentLanguage: locale } = useGlobalContext()
 	//
 	const getCurrentHash = () => window.location.hash;
@@ -74,16 +77,19 @@ export default function LanguageMenu({ onClickCostumer, customStyle }: PropsLang
 		}
 	}, [languageSwitchRef])
 
+	function handleMenu() {
+		const onlyClose = false
+		toggleMenuLanguages(
+			{
+				openLangToggle, setOpenLangToggle, maxHeightMenu, setMaxHeightMenu, setWidthVar, onlyClose
+			})
+	}
+
+	useEffect(() => { handleMenu() }, [onMenu])
 	return (
-		<div className={`languageSwitchContainer`}>
+		<div className={`languageSwitchContainer`} style={languageContainerStyle}>
 			<div className="languagesSubContainer"
-				onClick={() => {
-					const onlyClose = false
-					toggleMenuLanguages(
-						{
-							openLangToggle, setOpenLangToggle, maxHeightMenu, setMaxHeightMenu, setWidthVar, onlyClose
-						})
-				}}>
+				onClick={handleMenu}>
 
 				<div className="parentLanguagesMenu" style={{ width: widthVar }}>
 					<div className="languagesMenu menuApparence" style={{ maxHeight: maxHeightMenu, top: `${top}px` }}  >
@@ -114,7 +120,7 @@ export default function LanguageMenu({ onClickCostumer, customStyle }: PropsLang
 									}
 									}>
 										<LanguageFlagName languageName={value[1]} languageNameFull={value[0]} flag={value[2]} customClass="languageFlagCostumer"
-											customStyle={customStyle} />
+											customStyle={{ ...customStyle, fontSize }} />
 
 									</li>
 								)
@@ -125,13 +131,12 @@ export default function LanguageMenu({ onClickCostumer, customStyle }: PropsLang
 					</div>
 				</div>
 				<div className="languageSwitch" ref={languageSwitchRef}>
-					<LanguageFlagName languageName={languages[locale][1]} flag={languages[locale][2]} languageNameFull={languages[locale][0]} />
+					<LanguageFlagName languageName={languages[locale][1]} flag={languages[locale][2]} languageNameFull={languages[locale][0]} customStyle={{ fontSize }} />
 					{/*openLangToggle ? (
 						<IoMdArrowDropup className="dropStyle" />
 					) : (
 						<IoMdArrowDropdown className="dropStyle" />
 					)*/}
-
 				</div>
 			</div>
 		</div>

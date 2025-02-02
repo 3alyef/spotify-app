@@ -21,7 +21,6 @@ const Container = styled.div`
 `
 
 export default function AppRoutes() {
-
 	const { currentLanguage, setCurrentLanguage, setAccessToken, setIsLogged, isLogged } = useGlobalContext();
 
 
